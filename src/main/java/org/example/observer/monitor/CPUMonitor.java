@@ -20,8 +20,14 @@ public class CPUMonitor {
 
     public void publishUsage(double usage) {
         UsageEvent event = new UsageEvent(usage, Instant.now());
+
         for (CPUUsageObserver observer : observers) {
-            observer.onUsageChanged(event);
+            try {
+                observer.onUsageChanged(event);
+                System.out.println(" ");
+            } catch (Exception e) {
+                System.out.println("Что то не так " + e.getMessage());
+            }
         }
     }
 }
