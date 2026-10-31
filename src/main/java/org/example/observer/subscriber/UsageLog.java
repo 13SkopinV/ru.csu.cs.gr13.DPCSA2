@@ -7,6 +7,6 @@ public class UsageLog implements CPUUsageObserver {
 
     @Override
     public void onUsageChanged(UsageEvent usageEvent) {
-        System.out.println("Нагрузка: " + usageEvent.getUsage() + " Замер: " + usageEvent.getTimestamp());
+        System.out.println("Нагрузка: " + usageEvent.getFormattedUsage() + " Замер: " + usageEvent.getFormattedTime());
     }
 }

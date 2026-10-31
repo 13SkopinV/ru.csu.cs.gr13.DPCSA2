@@ -4,7 +4,7 @@ import org.example.observer.event.UsageEvent;
 import org.example.observer.monitor.CPUUsageObserver;
 
 public class UsageNotification implements CPUUsageObserver {
-    private boolean failing = false;
+    private volatile boolean failing;
 
     public void setFailing(boolean failing) {
         this.failing = failing;
@@ -15,6 +15,6 @@ public class UsageNotification implements CPUUsageObserver {
         if (failing) {
             throw new RuntimeException("Внешний сервер не доступен");
         }
-        System.out.println("Отправка во внешний сервис: нагрузка " + usageEvent.getUsage() + " Время " + usageEvent.getTimestamp());
+        System.out.println("Отправка во внешний сервис: нагрузка " + usageEvent.getFormattedUsage() + " Время " + usageEvent.getFormattedTime());
     }
 }
