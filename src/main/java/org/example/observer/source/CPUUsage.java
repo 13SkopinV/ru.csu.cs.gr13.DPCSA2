@@ -3,11 +3,14 @@ package org.example.observer.source;
 import java.util.Random;
 
 public class CPUUsage {
-    private int coreCount;
+    private volatile int coreCount;
     private double workload;
-    Random randomHelpCPU = new Random();
+    Random random = new Random();
 
-    public CPUUsage(int coreCount) {
+    public CPUUsage(int coreCount, double workload) {
+        if (coreCount < 1) {
+            throw new IllegalArgumentException("Ядер должно быть минимум одно");
+        }
         this.coreCount = coreCount;
         this.workload = workload;
     }
@@ -27,8 +30,8 @@ public class CPUUsage {
     }
 
     public double getUsage() {
-        workload += (randomHelpCPU.nextDouble() - 0.5) * 30;
+        workload += (random.nextDouble() - 0.5) * 60;
         workload = Math.max(0, workload);
-        return workload;
+        return Math.min(100, workload / coreCount);
     }
 }

@@ -1,33 +1,29 @@
 package org.example.observer;
 
 import org.example.observer.monitor.CPUMonitor;
+import org.example.observer.source.CPUUsage;
 import org.example.observer.subscriber.UsageLog;
 import org.example.observer.subscriber.UsageNotification;
 import org.example.observer.subscriber.UsageScaler;
 
 
 public class Main {
-    public static void main(String[] args) {
-        CPUMonitor monitor = new CPUMonitor();
+    public static void main(String[] args) throws InterruptedException {
+        CPUUsage cpu = new CPUUsage(2, 120);
+        CPUMonitor monitor = new CPUMonitor(cpu);
         UsageLog log = new UsageLog();
         UsageNotification server = new UsageNotification();
-        UsageScaler scaler = new UsageScaler();
-
 
         monitor.addObserver(log);
         monitor.addObserver(server);
-        monitor.addObserver(scaler);
+        monitor.addObserver(new UsageScaler(cpu));
 
-        monitor.publishUsage(50);
-        monitor.publishUsage(90);
-        monitor.publishUsage(20);
-        monitor.publishUsage(30);
-        monitor.publishUsage(75);
-        server.setFailing(true);
-        monitor.publishUsage(90);
+        monitor.start();
+        Thread.sleep(5000);
         monitor.removeObserver(log);
-        monitor.publishUsage(100);
-
-
+        Thread.sleep(3000);
+        server.setFailing(true);
+        Thread.sleep(3000);
+        monitor.stop();
     }
 }
