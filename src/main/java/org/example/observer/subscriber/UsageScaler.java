@@ -17,10 +17,10 @@ public class UsageScaler implements CPUUsageObserver {
     public void onUsageChanged(UsageEvent usageEvent) {
         if (usageEvent.getUsage() < lowThreshold) {
             cpuUsage.removeCore();
-            System.out.println("Ядро добавлено, текущее количество: " + cpuUsage.getCoreCount());
-        } else if (usageEvent.getUsage() > highThreshold){
-            cpuUsage.addCore();
             System.out.println("Ядро убрано, текущее количество: " + cpuUsage.getCoreCount());
+        } else if (usageEvent.getUsage() > highThreshold) {
+            cpuUsage.addCore();
+            System.out.println("Ядро добавлено, текущее количество: " + cpuUsage.getCoreCount());
         }
     }
 }
